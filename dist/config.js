@@ -27,7 +27,6 @@ var _default = {
     password: process.env.MQ_PASSWORD,
     queue: process.env.MQ_QUEUE
   },
-  port: process.env.PORT,
   serviceName: process.env.SERVICE_NAME || process.env.HOSTNAME || "Unnamed Service"
 };
 exports.default = _default;

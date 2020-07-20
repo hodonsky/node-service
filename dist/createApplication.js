@@ -9,8 +9,6 @@ var _amqplib = _interopRequireDefault(require("amqplib"));
 
 var _avro = require("./avro");
 
-var _types = require("AVRO/types");
-
 var _Base = _interopRequireDefault(require("./Base"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -18,10 +16,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var {
-  error: errorType
-} = _types.Actions;
 
 /**
  * Instantiates RabbitMQ connection
@@ -36,9 +30,11 @@ function start(_x, _x2, _x3, _x4) {
 
 function _start() {
   _start = _asyncToGenerator(function* (config, serviceFunctions, actions, dependencies) {
+    var service = new _Base.default(config, serviceFunctions, dependencies);
+
     try {
-      var service = new _Base.default(config, serviceFunctions, dependencies);
       var {
+        topic,
         mq: {
           protocol = "amqp",
           hostname,
@@ -66,18 +62,14 @@ function _start() {
           return yield start();
         })), connectionCheckDelay);
       });
-      connection.createChannel((error, channel) => {
-        if (error) {
-          console.error("CREATE CHANNEL ERROR");
-          service.log(error);
-          throw error;
-        }
 
-        channel.assertQueue(queue, {
+      try {
+        var channel = yield connection.createChannel();
+        channel.assertQueue(topic, {
           durable: true
         });
         channel.prefetch(1);
-        channel.consume(queue, /*#__PURE__*/function () {
+        channel.consume(topic, /*#__PURE__*/function () {
           var _ref4 = _asyncToGenerator(function* (_ref3) {
             var {
               properties: {
@@ -113,7 +105,7 @@ function _start() {
               });
 
               try {
-                channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)("".concat(errorType, "Response"), {
+                channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)({
                   error: {
                     name: name ? name : "PrepareService::channel:consume",
                     message: message ? message : "Unknown Error",
@@ -121,7 +113,7 @@ function _start() {
                     status: status ? status : 500,
                     userError: userError ? userError : false
                   }
-                }), {
+                }, actions[type].errorAVRO), {
                   type: "".concat(errorType, "Response"),
                   correlationId
                 });
@@ -137,7 +129,11 @@ function _start() {
         }(), {
           noAck: true
         });
-      });
+      } catch (error) {
+        console.error("CREATE CHANNEL ERROR");
+        service.log(error);
+        throw error;
+      }
 
       if (_conn) {
         _conn.emit("AMQP:reconnected", connection);

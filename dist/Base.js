@@ -26,7 +26,7 @@ class _default {
    * @param { Object } config
    */
   constructor(config, functionsDictionary) {
-    var _classPrivateFieldGet2;
+    var dependencies = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
     _config.set(this, {
       writable: true,
@@ -37,9 +37,7 @@ class _default {
 
     _classPrivateFieldSet(this, _config, _objectSpread({}, config));
 
-    if (((_classPrivateFieldGet2 = _classPrivateFieldGet(this, _config)) === null || _classPrivateFieldGet2 === void 0 ? void 0 : _classPrivateFieldGet2.dependencies.length) > 0) {
-      _classPrivateFieldGet(this, _config).dependencies.forEach(dep => this.attach(dep.name ? dep.name : dep.lib, dep.lib, dep.instantiate));
-    }
+    dependencies.forEach(dep => this.attach(dep.name ? dep.name : dep.lib, dep.lib, dep.instantiate));
 
     if (functionsDictionary) {
       this.extend(functionsDictionary);
@@ -58,9 +56,10 @@ class _default {
   attach(name, lib) {
     var instantiate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-    var Dependency = require(lib);
+    var required = require(lib);
 
-    this[name] = !instantiate ? dep : new Dependency();
+    var Dependency = required.default ? required.default : required;
+    this[name] = !instantiate ? Dependency : new Dependency();
   }
   /**
    * Extends the objects functionality during instantiation
