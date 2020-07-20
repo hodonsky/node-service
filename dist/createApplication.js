@@ -30,12 +30,12 @@ var connectionCheckDelay = 1000;
 
 var _conn;
 
-function start(_x, _x2, _x3) {
+function start(_x, _x2, _x3, _x4) {
   return _start.apply(this, arguments);
 }
 
 function _start() {
-  _start = _asyncToGenerator(function* (serviceFunctions, config, dependencies) {
+  _start = _asyncToGenerator(function* (config, serviceFunctions, actions, dependencies) {
     try {
       var service = new _Base.default(config, serviceFunctions, dependencies);
       var {
@@ -76,7 +76,7 @@ function _start() {
         channel.assertQueue(queue, {
           durable: true
         });
-        channel.prefetch(5);
+        channel.prefetch(1);
         channel.consume(queue, /*#__PURE__*/function () {
           var _ref4 = _asyncToGenerator(function* (_ref3) {
             var {
@@ -92,11 +92,11 @@ function _start() {
               var {
                 action,
                 data
-              } = (0, _avro.fromAVRO)(content, type);
+              } = (0, _avro.fromAVRO)(content, actions[type].requestAVRO);
               var response = yield service[action](data);
-              channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)("".concat(type, "Response"), {
+              channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)({
                 response
-              }), {
+              }, actions[type].responseAVRO, true), {
                 type: "".concat(type, "Response"),
                 correlationId
               });
@@ -131,7 +131,7 @@ function _start() {
             }
           });
 
-          return function (_x4) {
+          return function (_x5) {
             return _ref4.apply(this, arguments);
           };
         }(), {

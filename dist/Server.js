@@ -24,8 +24,8 @@ class _default {
     config = _objectSpread(_objectSpread({}, config), updates);
   }
 
-  constructor(serviceFunctions) {
-    return (0, _createApplication.default)(serviceFunctions, _objectSpread({}, config));
+  constructor(responders, actions, deps) {
+    return (0, _createApplication.default)(_objectSpread({}, config), responders, actions, deps);
   }
 
 }
