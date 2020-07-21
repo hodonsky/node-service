@@ -118,7 +118,7 @@ function _start() {
                 }, actions[type].errorAVRO, {
                   error: true
                 }), {
-                  type: "".concat(errorType, "Response"),
+                  type: "ErrorResponse",
                   correlationId
                 });
               } catch (e) {

@@ -1,6 +1,6 @@
 {
   "name": "@donsky/node-service",
-  "version": "0.3.0-alpha",
+  "version": "0.3.1-alpha",
   "description": "NodeJS Service for message queue (amqp 0-9-1) of 'topic' and 'action' responding",
   "main": "./bin/Server.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha --exit --require ./node_modules/babel-core/register",
-    "build": "npx babel --ignore 'node_modules/**' --ignore './*.test.js' --ignore 'tests/**' --out-dir ./bin ./lib"
+    "build": "npx babel --out-dir ./bin ./lib"
   },
   "repository": {
     "type": "git",
@@ -50,7 +50,7 @@
   "dependencies": {
     "amqplib": "^0.5.6",
     "avsc": "^5.4.21",
-    "@donsky/node-avro": "^0.2.11",
+    "@donsky/node-avro": "^0.2.13",
     "os": "^0.1.1",
     "uuid": "^8.2.0"
   },
@@ -114,7 +114,9 @@
       ]
     ],
     "ignore": [
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "./*.test.js",
+      "tests/**"
     ],
     "sourceMaps": true
   }
