@@ -34,13 +34,13 @@ function _start() {
 
     try {
       var {
-        topic,
         mq: {
           protocol = "amqp",
           hostname,
           port,
           username,
-          password
+          password,
+          queue
         }
       } = config;
       var connection = yield _amqplib.default.connect({
@@ -65,11 +65,11 @@ function _start() {
 
       try {
         var channel = yield connection.createChannel();
-        channel.assertQueue(topic, {
+        channel.assertQueue(queue, {
           durable: true
         });
         channel.prefetch(1);
-        channel.consume(topic, /*#__PURE__*/function () {
+        channel.consume(queue, /*#__PURE__*/function () {
           var _ref4 = _asyncToGenerator(function* (_ref3) {
             var {
               properties: {

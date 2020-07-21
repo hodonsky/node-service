@@ -1,6 +1,6 @@
 {
   "name": "@donsky/node-service",
-  "version": "0.3.2-alpha",
+  "version": "0.3.3",
   "description": "NodeJS Service for message queue (amqp 0-9-1) of 'topic' and 'action' responding",
   "main": "./bin/Server.js",
   "directories": {
@@ -45,7 +45,7 @@
   "homepage": "https://github.com/hodonsky/node-service#readme",
   "engines": {
     "node": ">=12.13.1",
-    "npm": ">=6.14.6"
+    "npm": ">=6.14.7"
   },
   "dependencies": {
     "amqplib": "^0.5.6",
