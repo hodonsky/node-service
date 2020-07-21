@@ -68,8 +68,9 @@ class _default {
 
 
   extend(functionsDictionary) {
-    Object.keys(functionsDictionary).forEach(key => {
-      this[key] = functionsDictionary[key];
+    Object.entries(functionsDictionary).forEach((_ref) => {
+      var [key, fn] = _ref;
+      return this[key] = fn;
     });
     return this;
   }

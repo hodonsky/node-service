@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _amqplib = _interopRequireDefault(require("amqplib"));
 
-var _avro = require("./avro");
+var _nodeAvro = require("@donsky/node-avro");
 
 var _Base = _interopRequireDefault(require("./Base"));
 
@@ -84,11 +84,13 @@ function _start() {
               var {
                 action,
                 data
-              } = (0, _avro.fromAVRO)(content, actions[type].requestAVRO);
+              } = (0, _nodeAvro.fromAVRO)(content, actions[type].requestAVRO);
               var response = yield service[action](data);
-              channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)({
+              channel.sendToQueue(replyTo, yield (0, _nodeAvro.toAVRO)({
                 response
-              }, actions[type].responseAVRO, true), {
+              }, actions[type].responseAVRO, {
+                response: true
+              }), {
                 type: "".concat(type, "Response"),
                 correlationId
               });
@@ -105,7 +107,7 @@ function _start() {
               });
 
               try {
-                channel.sendToQueue(replyTo, yield (0, _avro.toAVRO)({
+                channel.sendToQueue(replyTo, yield (0, _nodeAvro.toAVRO)({
                   error: {
                     name: name ? name : "PrepareService::channel:consume",
                     message: message ? message : "Unknown Error",
@@ -113,7 +115,9 @@ function _start() {
                     status: status ? status : 500,
                     userError: userError ? userError : false
                   }
-                }, actions[type].errorAVRO), {
+                }, actions[type].errorAVRO, {
+                  error: true
+                }), {
                   type: "".concat(errorType, "Response"),
                   correlationId
                 });
