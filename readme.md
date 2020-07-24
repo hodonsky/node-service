@@ -16,22 +16,11 @@ This is the service handler side of the SOA
 ## Initialize Your Service
 
 ```javascript
-// -- CommonJS --
-const Service = require( "@donsky/node-service" ).default
-
 // -- ESNext --
 import Service from "@donsky/node-service"
 
-new Service(/*
-  { ...responders },
-  { ...actions },
-  // this[name] = [new@instantiate] require(lib)
-  [
-    { lib: "uuid" },
-    { lib: "sha256", name: "encrypt"  }
-    { lib: "./localDep", name: "dep1", instantiate: true }
-  ]
-*/)
+
+new Service(/* { ...actions } */)
 ```
 ## Configure
 All of the following configurations must be handled in the env vars, or in config in the code. Examples below:
@@ -71,10 +60,13 @@ Service.configure({
 
 ```javascript
 // action.js
-/** 
- * Required Attributes
- */
+
+import dep1 from "Dep1"
 export const consumerActionName = {
+  lambda: async function ( { firstName } ) {
+    const lastName = await dep1()
+    return { response: lastName }
+  },
   requestAVRO : [
     { name: "firstName", type: "string" }
   ],
@@ -86,18 +78,17 @@ export const consumerActionName = {
   ]
 }
 ```
+## Events: 
+- Error:
+See what's in the error variables for more detail, like so:
+`serv.on( "error", err => console.log( err ) )`
+- Connected
+Successfully connected to the message queue server
+serv.on( "connected", () => console.log( "Service Connected to MQ" ) )
+- Ready:
+App is ready and listening on the topic
+serv.on( "ready", topic => console.log( "All Ready: ", topic ))
 
-## Responder Function:
-```javascript
-consumer.js
-/**
- * Consumer Action
- */
-export async function consumerActionName( { firstName } ) {
-  const lastName = "alwaysLast"
-  return { response: lastName }
-}
-```
 
 #### Example:
 
@@ -105,12 +96,13 @@ export async function consumerActionName( { firstName } ) {
 "use strict"
 
 import Service from "@donsky/node-service"
-
 import * as actions from "./action"
-import * as responders from "./consumer"
 
 Service.configure( { mq: { queue: "consumerTopic" } } )
-new Service( responders, actions, [ { lib: "uuid" } ] )
+const svc = new Service( actions )
+svc.on( "error", error => console.log( error ) )
+svc.on( "connected", () => console.log( "Connected" ) )
+svc.on( "ready", () => console.log( "Service is ready" ) )
 ```
 
 <br/>
