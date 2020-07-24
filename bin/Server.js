@@ -149,9 +149,10 @@ var _connect2 = /*#__PURE__*/function () {
         heartbeat: 20
       }));
 
-      connection.on("error", err => this.emit("error", err));
+      connection.on("error", err => _classPrivateFieldGet(this, _emit).call(this, "error", err));
       connection.on("close", () => {
-        this.emit("reconnecting");
+        _classPrivateFieldGet(this, _emit).call(this, "reconnecting");
+
         setTimeout(() => process.nextTick( /*#__PURE__*/_asyncToGenerator(function* () {
           _classPrivateFieldSet(_this, _connection, null);
 
@@ -159,7 +160,8 @@ var _connect2 = /*#__PURE__*/function () {
         })), connectionCheckDelay);
       });
     } catch (error) {
-      this.emit("error", error);
+      _classPrivateFieldGet(this, _emit).call(this, "error", error);
+
       setTimeout(() => process.nextTick( /*#__PURE__*/_asyncToGenerator(function* () {
         _classPrivateFieldSet(_this, _connection, null);
 
@@ -242,9 +244,9 @@ var _createApplication2 = /*#__PURE__*/function () {
                 correlationId
               });
 
-              _this2.emit("error", error);
+              _classPrivateFieldGet(_this2, _emit).call(_this2, "error", error);
             } catch (error) {
-              _this2.emit("error", error);
+              _classPrivateFieldGet(_this2, _emit).call(_this2, "error", error);
             }
           }
         });
