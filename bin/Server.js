@@ -19,17 +19,21 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
 
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+var config = _objectSpread({}, _config2.default);
 
 var _actions = new WeakMap();
 
@@ -47,10 +51,10 @@ var _createApplication = new WeakSet();
 
 class _default {
   static configure(updates) {
-    _classPrivateFieldSet(this, _config, _objectSpread(_objectSpread(_objectSpread({}, updates), _classPrivateFieldGet(this, _config)), Object.entries(updates).reduce((mix, _ref) => {
+    config = (_readOnlyError("config"), _objectSpread(_objectSpread(_objectSpread({}, updates), config), Object.entries(updates).reduce((mix, _ref) => {
       var [key, val] = _ref;
       return _objectSpread(_objectSpread({}, mix), {}, {
-        [key]: _classPrivateFieldGet(this, _config)[key] ? _objectSpread(_objectSpread({}, _classPrivateFieldGet(this, _config)[key]), val) : val
+        [key]: config[key] ? _objectSpread(_objectSpread({}, config[key]), val) : val
       });
     }, {})));
   }
@@ -71,8 +75,8 @@ class _default {
 
     _config.set(this, {
       writable: true,
-      value: _objectSpread(_objectSpread({}, _config2.default), {}, {
-        mq: _objectSpread(_objectSpread({}, _config2.default.mq), {}, {
+      value: _objectSpread(_objectSpread({}, config), {}, {
+        mq: _objectSpread(_objectSpread({}, config.mq), {}, {
           connectionCheckDelay: 1000
         })
       })
