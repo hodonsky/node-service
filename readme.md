@@ -18,7 +18,6 @@ This is the service handler side of the SOA
 ```javascript
 import Service from "@donsky/node-service"
 
-
 new Service(/* { ...actions } */)
 ```
 ## Configure
@@ -35,8 +34,8 @@ export HOSTNAME=consumerService
 export MQ_PROTOCOL=amqp
 export MQ_HOSTNAME=rabbitmq
 export MQ_PORT=5672
-export MQ_USERNAME=admin
-export MQ_PASSWORD=Abcd1234
+export MQ_USERNAME=defaultAdmin
+export MQ_PASSWORD=SomePassword
 export MQ_QUEUE=consumerTopic
 ```
 ###### The hostname can be a URI or a local hostname, in this example, _'rabbitmq'_ is my docker container hostname. During deploy this would change and be environment specific.
@@ -45,8 +44,8 @@ export MQ_QUEUE=consumerTopic
 ```javascript
 Service.configure({
   mq:{
-    username: "admin",
-    password: "Abcd1234"
+    username: "defaultAdmin",
+    password: "somePassword"
     hostname: "rabbitmq"
     port    : 5672,
     queue   : "consumerTopic"
@@ -71,9 +70,6 @@ export const consumerActionName = {
   ],
   responseAVRO: [
     { name: "response", type: "string" }
-  ],
-  errorAVRO:[
-    { name: "error", type: "string" }
   ]
 }
 ```
