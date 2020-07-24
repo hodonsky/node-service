@@ -238,7 +238,7 @@ var _createApplication2 = /*#__PURE__*/function () {
                   status: status ? status : 500,
                   userError: userError ? userError : false
                 }
-              }, _classPrivateFieldGet(_this2, _actions)[type].errorAVRO, {
+              }, {}, {
                 error: true
               }), {
                 type: "ErrorResponse",
