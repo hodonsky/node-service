@@ -91,6 +91,10 @@ var _connect2 = /*#__PURE__*/function () {
   var _connect3 = _asyncToGenerator(function* () {
     var _this = this;
 
+    if (_classPrivateFieldGet(this, _connection)) {
+      return true;
+    }
+
     var {
       mq: {
         protocol = "amqp",
@@ -116,13 +120,17 @@ var _connect2 = /*#__PURE__*/function () {
       connection.on("close", () => {
         this.emit("reconnecting");
         setTimeout(() => process.nextTick( /*#__PURE__*/_asyncToGenerator(function* () {
-          return yield _classPrivateMethodGet(_this, _connect, _connect2).call(_this);
+          _classPrivateFieldSet(_this, _connection, null);
+
+          yield _classPrivateMethodGet(_this, _connect, _connect2).call(_this);
         })), connectionCheckDelay);
       });
     } catch (error) {
       this.emit("error", error);
       setTimeout(() => process.nextTick( /*#__PURE__*/_asyncToGenerator(function* () {
-        return yield _classPrivateMethodGet(_this, _connect, _connect2).call(_this);
+        _classPrivateFieldSet(_this, _connection, null);
+
+        yield _classPrivateMethodGet(_this, _connect, _connect2).call(_this);
       })), connectionCheckDelay);
     }
   });
