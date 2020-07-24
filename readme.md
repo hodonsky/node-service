@@ -16,7 +16,6 @@ This is the service handler side of the SOA
 ## Initialize Your Service
 
 ```javascript
-// -- ESNext --
 import Service from "@donsky/node-service"
 
 
@@ -60,8 +59,8 @@ Service.configure({
 
 ```javascript
 // action.js
-
 import dep1 from "Dep1"
+
 export const consumerActionName = {
   lambda: async function ( { firstName } ) {
     const lastName = await dep1()
