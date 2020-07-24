@@ -47,10 +47,10 @@ var _createApplication = new WeakSet();
 
 class _default {
   static configure(updates) {
-    _classPrivateFieldSet(this, _config, _objectSpread(_objectSpread(_objectSpread({}, updates), config), Object.entries(updates).reduce((mix, _ref) => {
+    _classPrivateFieldSet(this, _config, _objectSpread(_objectSpread(_objectSpread({}, updates), _classPrivateFieldGet(this, _config)), Object.entries(updates).reduce((mix, _ref) => {
       var [key, val] = _ref;
       return _objectSpread(_objectSpread({}, mix), {}, {
-        [key]: config[key] ? _objectSpread(_objectSpread({}, config[key]), val) : val
+        [key]: _classPrivateFieldGet(this, _config)[key] ? _objectSpread(_objectSpread({}, _classPrivateFieldGet(this, _config)[key]), val) : val
       });
     }, {})));
   }
