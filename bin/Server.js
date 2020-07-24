@@ -11,8 +11,6 @@ var _amqplib = _interopRequireDefault(require("amqplib"));
 
 var _nodeAvro = require("@donsky/node-avro");
 
-var _Base = _interopRequireDefault(require("./Base"));
-
 var _config2 = _interopRequireDefault(require("./config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -47,7 +45,7 @@ var _connect = new WeakSet();
 
 var _createApplication = new WeakSet();
 
-class _default extends _Base.default {
+class _default {
   static configure(updates) {
     _classPrivateFieldSet(this, _config, _objectSpread(_objectSpread(_objectSpread({}, updates), config), Object.entries(updates).reduce((mix, _ref) => {
       var [key, val] = _ref;
@@ -62,6 +60,39 @@ class _default extends _Base.default {
    * @param { Object } actions - list of actions and their lambdas
    */
   constructor(actions) {
+    _createApplication.add(this);
+
+    _connect.add(this);
+
+    _actions.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _config.set(this, {
+      writable: true,
+      value: _objectSpread(_objectSpread({}, _config2.default), {}, {
+        mq: _objectSpread(_objectSpread({}, _config2.default.mq), {}, {
+          connectionCheckDelay: 1000
+        })
+      })
+    });
+
+    _connection.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _emit.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _emitter.set(this, {
+      writable: true,
+      value: void 0
+    });
+
     _classPrivateFieldSet(this, _config, _objectSpread({}, config));
 
     _classPrivateFieldSet(this, _actions, _objectSpread({}, actions));
