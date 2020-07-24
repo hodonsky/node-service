@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default = {
-  env: process.env.AOB_ENV || "local",
+  env: process.env.NODE_ENV || "local",
   mq: {
     protocol: process.env.MQ_PROTOCOL,
     hostname: process.env.MQ_HOSTNAME,

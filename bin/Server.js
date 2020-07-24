@@ -101,9 +101,9 @@ class _default {
 
     _classPrivateFieldSet(this, _emitter, new _events.EventEmitter());
 
-    this.on = _classPrivateFieldGet(this, _emitter).on;
+    this.on = _classPrivateFieldGet(this, _emitter).on.bind(_classPrivateFieldGet(this, _emitter));
 
-    _classPrivateFieldSet(this, _emit, _classPrivateFieldGet(this, _emitter).emit);
+    _classPrivateFieldSet(this, _emit, _classPrivateFieldGet(this, _emitter).emit.bind(_classPrivateFieldGet(this, _emitter)));
 
     _classPrivateMethodGet(this, _createApplication, _createApplication2).call(this);
   }
@@ -149,8 +149,9 @@ var _connect2 = /*#__PURE__*/function () {
         heartbeat: 20
       }));
 
-      connection.on("error", err => _classPrivateFieldGet(this, _emit).call(this, "error", err));
-      connection.on("close", () => {
+      _classPrivateFieldGet(this, _connection).on("error", err => _classPrivateFieldGet(this, _emit).call(this, "error", err));
+
+      _classPrivateFieldGet(this, _connection).on("close", () => {
         _classPrivateFieldGet(this, _emit).call(this, "reconnecting");
 
         setTimeout(() => process.nextTick( /*#__PURE__*/_asyncToGenerator(function* () {
@@ -187,11 +188,11 @@ var _createApplication2 = /*#__PURE__*/function () {
 
     try {
       var channel = yield _classPrivateFieldGet(this, _connection).createChannel();
-      channel.assertQueue(queue, {
+      channel.assertQueue(_classPrivateFieldGet(this, _config).mq.queue, {
         durable: true
       });
       channel.prefetch(1);
-      channel.consume(queue, /*#__PURE__*/function () {
+      channel.consume(_classPrivateFieldGet(this, _config).mq.queue, /*#__PURE__*/function () {
         var _ref5 = _asyncToGenerator(function* (_ref4) {
           var {
             properties: {
@@ -202,7 +203,7 @@ var _createApplication2 = /*#__PURE__*/function () {
             content
           } = _ref4;
 
-          if (!_this2.actions[type]) {
+          if (!_classPrivateFieldGet(_this2, _actions)[type]) {
             throw new TypeError("No Function '".concat(type, "' on 'this'"));
           }
 
