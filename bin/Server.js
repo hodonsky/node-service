@@ -31,8 +31,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 var config = _objectSpread({}, _config2.default);
 
 var _actions = new WeakMap();
@@ -51,12 +49,12 @@ var _createApplication = new WeakSet();
 
 class _default {
   static configure(updates) {
-    config = (_readOnlyError("config"), _objectSpread(_objectSpread(_objectSpread({}, updates), config), Object.entries(updates).reduce((mix, _ref) => {
+    config = _objectSpread(_objectSpread(_objectSpread({}, updates), config), Object.entries(updates).reduce((mix, _ref) => {
       var [key, val] = _ref;
       return _objectSpread(_objectSpread({}, mix), {}, {
         [key]: config[key] ? _objectSpread(_objectSpread({}, config[key]), val) : val
       });
-    }, {})));
+    }, {}));
   }
 
   /**
