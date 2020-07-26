@@ -1,6 +1,6 @@
 # Node-Service
 
-This is the service handler side of the SOA
+This is the service handler side of the SOA: : [Working Example](https://github.com/hodonsky/node-soa-example)
 
 ### Prequisites ( standard AMQP 0-9-1 )
 - AMQP Server/Cluster accepting connections with credentials. ( see  [`Local`](#Local) setup )
