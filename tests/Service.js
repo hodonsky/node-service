@@ -2,7 +2,7 @@
 const { expect } = require( "chai" )
 
 const _Service = require( "../bin" ).default
-const Service = require( "../lib/Server").default
+const Service = require( "../lib/Service").default
 
 describe( "ESNext Service", () => {
   it( "has static properties", () => {
