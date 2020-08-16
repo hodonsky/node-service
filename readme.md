@@ -95,8 +95,9 @@ import * as actions from "./action"
 
 Service.configure( { mq: { queue: "consumerTopic" } } )
 const svc = new Service( actions )
-svc.on( "error", error => console.log( error ) )
+svc.on( "error", error => console.error( error ) )
 svc.on( "connected", () => console.log( "Connected" ) )
+svc.on( "reconnecting", () => console.log( "...reconnecting" ) )
 svc.on( "ready", () => console.log( "Service is ready" ) )
 ```
 
