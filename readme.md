@@ -36,7 +36,7 @@ export MQ_HOSTNAME=rabbitmq
 export MQ_PORT=5672
 export MQ_USERNAME=defaultAdmin
 export MQ_PASSWORD=SomePassword
-export MQ_QUEUE=consumerTopic
+export MQ_TOPIC=consumerTopic
 ```
 ###### The hostname can be a URI or a local hostname, in this example, _'rabbitmq'_ is my docker container hostname. During deploy this would change and be environment specific.
 
@@ -48,7 +48,7 @@ Service.configure({
     password: "somePassword"
     hostname: "rabbitmq"
     port    : 5672,
-    queue   : "consumerTopic"
+    topic   : "consumerTopic"
   }
 })
 ```
@@ -93,7 +93,7 @@ serv.on( "ready", topic => console.log( "All Ready: ", topic ))
 import Service from "@donsky/node-service"
 import * as actions from "./action"
 
-Service.configure( { mq: { queue: "consumerTopic" } } )
+Service.configure( { mq: { topic: "consumerTopic" } } )
 const svc = new Service( actions )
 svc.on( "error", error => console.error( error ) )
 svc.on( "connected", () => console.log( "Connected" ) )
@@ -137,7 +137,7 @@ services:
       - MQ_PORT=5672
       - MQ_USERNAME=defaultAdmin
       - MQ_PASSWORD=SomePassword
-      - MQ_QUEUE=consumerTopic
+      - MQ_TOPIC=consumerTopic
     depends_on:
       - rabbitmq
     restart: on-failure
