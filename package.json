@@ -1,6 +1,6 @@
 {
-  "name": "@donsky/node-service",
-  "version": "0.3.3",
+  "name": "@hodonsky/node-service",
+  "version": "2.0.0",
   "description": "NodeJS Service for message queue (amqp 0-9-1) of 'topic' and 'action' responding",
   "main": "./bin/Server.js",
   "directories": {
